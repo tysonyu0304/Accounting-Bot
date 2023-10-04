@@ -22,7 +22,7 @@ async def on_ready():
     #設定機器人狀態
     await bot.change_presence(activity=discord.Game(name="$help")) 
     print(f"bot is ready! {bot.user}")
-
+"""
 @bot.command()
 #help指令
 async def help(ctx):
@@ -32,7 +32,7 @@ async def help(ctx):
     embed.add_field(name="刪除 $delete", value="用法: $delete <編號 or all>", inline=True)
     embed.add_field(name="總金額 $total", value="用法: $total", inline=False)
     await ctx.send(embed=embed)
-
+"""
 @bot.command()
 #載入元件
 async def load(ctx, *args):
@@ -42,7 +42,7 @@ async def load(ctx, *args):
         await ctx.send("請輸入元件名稱")
         return
     for i in args:
-        bot.load_extension(f"cogs.{i}")
+        await bot.load_extension(f"cogs.{i}")
         await ctx.send(f"已載入 {i}")
 
 @bot.command()
@@ -54,7 +54,7 @@ async def unload(ctx, *args):
         await ctx.send("請輸入元件名稱")
         return
     for i in args:
-        bot.unload_extension(f"cogs.{i}")
+        await bot.unload_extension(f"cogs.{i}")
         await ctx.send(f"已卸載 {i}")
 
 @bot.command()
@@ -66,7 +66,7 @@ async def reload(ctx, *args):
         await ctx.send("請輸入元件名稱")
         return
     for i in args:
-        bot.reload_extension(f"cogs.{i}")
+        await bot.reload_extension(f"cogs.{i}")
         await ctx.send(f"已重新載入 {i}")
 
 @bot.command()

@@ -14,7 +14,7 @@ load_dotenv()
 intents = discord.Intents.all()
 
 #建立機器人 並設定機器人的指令前綴
-bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
+bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
 #當機器人完成啟動時
 @bot.event

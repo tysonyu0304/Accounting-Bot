@@ -12,7 +12,6 @@ load_dotenv()
 
 #設定機器人的權限
 intents = discord.Intents.all()
-intents.message_content = True
 
 #建立機器人 並設定機器人的指令前綴
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
@@ -20,6 +19,8 @@ bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 #當機器人完成啟動時
 @bot.event
 async def on_ready():
+    #設定機器人狀態
+    await bot.change_presence(activity=discord.Game(name="$help")) 
     print("bot is ready!")
 
 @bot.command()
@@ -35,7 +36,10 @@ async def help(ctx):
 @bot.command()
 
 async def author(ctx):
-    embed=discord.Embed(title="作者", description=f"作者: {bot.owner_id}")
+    name = bot.get_user(bot.owner_id)
+    embed=discord.Embed(title="作者", description=f"作者: {name}")
+    embed.add_field(name="Profile", value="https://discordapp.com/users/521308593136467979")
+    embed.set_thumbnail(url = name.avatar)
     await ctx.send(embed=embed)
 
 @bot.command()
@@ -134,4 +138,6 @@ async def check(ctx):
     else:
         await ctx.reply("無資料")
 
+bot.owner_id = 521308593136467979
+#啟動機器人
 bot.run(os.getenv("TOKEN"))

@@ -1,5 +1,10 @@
 import discord
 import random
+import os
+from dotenv import load_dotenv
+
+#載入.env檔
+load_dotenv()
 
 intent = discord.Intents.all()
 intent.message_content = True
@@ -23,4 +28,4 @@ async def on_message(message):
         await message.channel.send(context[random.randint(0, len(context)-1)])
         #print(message.content)
 
-client.run('MTE1ODY2NDIxMDQ5OTIzOTk3Ng.GqJ4Eu.B5z7b_qW-10SDqCyoeA7MY8cuKTxiVvQTaWJPM')
+client.run(os.getenv("TOKEN"))

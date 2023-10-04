@@ -33,6 +33,12 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 @bot.command()
+
+async def author(ctx):
+    embed=discord.Embed(title="作者", description=f"作者: {bot.owner_id}")
+    await ctx.send(embed=embed)
+
+@bot.command()
 async def ping(ctx):
     await ctx.reply("pong!")
 

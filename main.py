@@ -20,7 +20,7 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 @bot.event
 async def on_ready():
     #設定機器人狀態
-    await bot.change_presence(activity=discord.Game(name="$help")) 
+    await bot.change_presence(activity=discord.Game(name="!help")) 
     print(f"bot is ready! {bot.user}")
 
 @bot.command()
@@ -37,7 +37,6 @@ async def help(ctx):
 #載入元件
 async def load(ctx, *args):
     if ctx.author.id != bot.owner_id:
-        print("no")
         return
     if len(args) == 0:
         await ctx.send("請輸入元件名稱")
@@ -50,7 +49,6 @@ async def load(ctx, *args):
 #卸載元件
 async def unload(ctx, *args):
     if ctx.author.id != bot.owner_id:
-        print("no")
         return
     if len(args) == 0:
         await ctx.send("請輸入元件名稱")
@@ -63,7 +61,6 @@ async def unload(ctx, *args):
 #重新載入元件
 async def reload(ctx, *args):
     if ctx.author.id != bot.owner_id:
-        print("no")
         return
     if len(args) == 0:
         await ctx.send("請輸入元件名稱")
@@ -77,7 +74,7 @@ async def reload(ctx, *args):
 async def author(ctx):
     name = bot.get_user(bot.owner_id)
     embed=discord.Embed(title="作者", description=f"作者: {name}")
-    embed.add_field(name="Profile", value="https://discordapp.com/users/521308593136467979")
+    embed.add_field(name="Profile", value=f"https://discordapp.com/users/{bot.owner_id}")
     embed.set_thumbnail(url = name.avatar)
     await ctx.send(embed=embed)
 
@@ -94,15 +91,15 @@ async def buy(ctx, *args):
         await ctx.send("格式: $buy <價格> <名稱>(可省略)")
     else:
         #判斷是否存在使用者資料
-        if not os.path.exists(f"Data/{ctx.author.id}.json"):
+        if not os.path.exists(f"Datas/{ctx.author.id}.json"):
             #若不存在 則建立使用者資料
-            with open("Data/sample.json", "r") as f:
+            with open("Datas/sample.json", "r") as f:
                 sample = json.load(f)
                 sample["name"] = ctx.author.name
-                json.dump(sample, open(f"Data/{ctx.author.id}.json", "w"), indent = 4)
+                json.dump(sample, open(f"Datas/{ctx.author.id}.json", "w"), indent = 4)
 
         #讀取使用者資料
-        with open(f"Data/{ctx.author.id}.json", "r") as f:
+        with open(f"Datas/{ctx.author.id}.json", "r") as f:
             data = json.load(f)
             data["log"]
             #判斷是否有輸入名稱
@@ -125,15 +122,15 @@ async def buy(ctx, *args):
 #刪除數據指令
 async def delete(ctx, *args):
     #判斷是否存在使用者資料
-    if not os.path.exists(f"Data/{ctx.author.id}.json"):
+    if not os.path.exists(f"Datas/{ctx.author.id}.json"):
         await ctx.reply("無資料")
-        with open("Data/sample.json", "r") as f:
+        with open("Datas/sample.json", "r") as f:
             sample = json.load(f)
             sample["name"] = ctx.author.name
-            json.dump(sample, open(f"Data/{ctx.author.id}.json", "w"), indent = 4)
+            json.dump(sample, open(f"Datas/{ctx.author.id}.json", "w"), indent = 4)
     
     #讀取使用者資料
-    with open(f"Data/{ctx.author.id}.json", "r") as f:
+    with open(f"Datas/{ctx.author.id}.json", "r") as f:
         data = json.load(f)
 
     #判斷輸入參數是否正確
@@ -142,20 +139,20 @@ async def delete(ctx, *args):
         await ctx.send("格式: $delete <編號> or all")
     #刪除全部
     elif args[0].lower() == "all":
-        os.remove(f"Data/{ctx.author.id}.json")
+        os.remove(f"Datas/{ctx.author.id}.json")
         await ctx.reply("已刪除")
     #刪除指定編號
     elif args[0] in data["log"]:
         del data["log"][args[0]]
-        json.dump(data, open(f"Data/{ctx.author.id}.json", "w"), indent = 4)
+        json.dump(data, open(f"Datas/{ctx.author.id}.json", "w"), indent = 4)
         await ctx.reply(f"已刪除 編號為 {args[0]} 的資料")
 
 @bot.command()
 #查看總金額指令
 async def total(ctx):
     #判斷是否存在使用者資料 若存在則顯示總金額
-    if os.path.exists(f"Data/{ctx.author.id}.json"):
-        with open(f"Data/{ctx.author.id}.json", "r") as f:
+    if os.path.exists(f"Datas/{ctx.author.id}.json"):
+        with open(f"Datas/{ctx.author.id}.json", "r") as f:
             data = json.load(f)
             await ctx.reply(f"總金額: {data['total']}")
     else:
@@ -165,8 +162,8 @@ async def total(ctx):
 #查看紀錄指令
 async def check(ctx):
     #判斷是否存在使用者資料 若存在則顯示紀錄
-    if os.path.exists(f"Data/{ctx.author.id}.json"):
-        with open(f"Data/{ctx.author.id}.json", "r") as f:
+    if os.path.exists(f"Datas/{ctx.author.id}.json"):
+        with open(f"Datas/{ctx.author.id}.json", "r") as f:
             data = json.load(f)
             text = "" #輸出文字
             j = 1
@@ -177,6 +174,10 @@ async def check(ctx):
     else:
         await ctx.reply("無資料")
 
-#bot.owner_id = 521308593136467979
-#啟動機器人
-bot.run(os.getenv("TOKEN"))
+def main():
+    bot.owner_id = int(os.getenv("Owner"))
+    #啟動機器人
+    bot.run(os.getenv("TOKEN"))
+
+if __name__ == "__main__":
+    main()

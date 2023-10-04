@@ -47,6 +47,32 @@ async def load(ctx, *args):
         await ctx.send(f"已載入 {i}")
 
 @bot.command()
+#卸載元件
+async def unload(ctx, *args):
+    if ctx.author.id != bot.owner_id:
+        print("no")
+        return
+    if len(args) == 0:
+        await ctx.send("請輸入元件名稱")
+        return
+    for i in args:
+        bot.unload_extension(f"cogs.{i}")
+        await ctx.send(f"已卸載 {i}")
+
+@bot.command()
+#重新載入元件
+async def reload(ctx, *args):
+    if ctx.author.id != bot.owner_id:
+        print("no")
+        return
+    if len(args) == 0:
+        await ctx.send("請輸入元件名稱")
+        return
+    for i in args:
+        bot.reload_extension(f"cogs.{i}")
+        await ctx.send(f"已重新載入 {i}")
+
+@bot.command()
 #顯示作者
 async def author(ctx):
     name = bot.get_user(bot.owner_id)
@@ -151,6 +177,6 @@ async def check(ctx):
     else:
         await ctx.reply("無資料")
 
-bot.owner_id = 521308593136467979
+#bot.owner_id = 521308593136467979
 #啟動機器人
 bot.run(os.getenv("TOKEN"))

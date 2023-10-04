@@ -21,7 +21,7 @@ bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 async def on_ready():
     #設定機器人狀態
     await bot.change_presence(activity=discord.Game(name="$help")) 
-    print("bot is ready!")
+    print(f"bot is ready! {bot.user}")
 
 @bot.command()
 #help指令
@@ -34,7 +34,20 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 @bot.command()
+#載入元件
+async def load(ctx, *args):
+    if ctx.author.id != bot.owner_id:
+        print("no")
+        return
+    if len(args) == 0:
+        await ctx.send("請輸入元件名稱")
+        return
+    for i in args:
+        bot.load_extension(f"cogs.{i}")
+        await ctx.send(f"已載入 {i}")
 
+@bot.command()
+#顯示作者
 async def author(ctx):
     name = bot.get_user(bot.owner_id)
     embed=discord.Embed(title="作者", description=f"作者: {name}")

@@ -1,2 +1,4 @@
 /.env
 /Datas
+/__pycache__
+/cogs/__pycache__

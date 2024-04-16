@@ -12,12 +12,12 @@ class Money(commands.Cog):
     async def on_ready(self): #當機器人完成啟動時
         print("Money is ready!")
 
-    @commands.command(name = "buy")
+    @commands.command(aliases=['b', 'B'])
     #記帳指令
     async def buy(self, ctx, *args):
         #紀錄日期
         self.date = list(map(int, str(datetime.datetime.now().strftime("%Y %m %d %H %M %S")).split()))
-        # self.date = [int(datetime.datetime.now().strftime("%y")), int(datetime.datetime.now().strftime("%m")), int(datetime.datetime.now().strftime("%d"))]
+    
          #判斷是否存在使用者資訊
         if not os.path.exists(f"Datas/{ctx.author.id}.json"):
             #若不存在 則建立使用者資料
@@ -57,7 +57,7 @@ class Money(commands.Cog):
             json.dump(data, open(f"Datas/{ctx.author.id}.json", "w"), indent = 4)
             await ctx.reply(f"已記錄 ID:{data['nextID']-1}, 名稱:{data['log'][data['nextID']-1][0]}, 價格:{data['log'][data['nextID']-1][1]}")
 
-    @commands.command()
+    @commands.command(aliases=['d', 'D'])
     #刪除數據指令
     async def delete(self, ctx, *args):
         #判斷是否存在使用者資料
@@ -105,7 +105,7 @@ class Money(commands.Cog):
 
             
     
-    @commands.command()
+    @commands.command(aliases=['t', 'T'])
     #查看總金額指令
     async def total(self, ctx):
         #判斷是否存在使用者資料
@@ -122,7 +122,7 @@ class Money(commands.Cog):
             data = json.load(f)
             await ctx.reply(f"總金額: {data['total']}")
     
-    @commands.command()
+    @commands.command(aliases=['c', 'C'])
     #查看紀錄指令
     async def check(self, ctx):
         #判斷是否存在使用者資料
@@ -154,7 +154,7 @@ class Money(commands.Cog):
 ```
                 """)
     
-    @commands.command()
+    @commands.command(aliases=['e', 'E'])
     #編輯數據指令
     async def edit(self, ctx, *args):
         #判斷是否存在使用者資料

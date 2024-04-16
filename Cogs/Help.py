@@ -9,7 +9,7 @@ class Help(commands.Cog):
     async def on_ready(self): #當機器人完成啟動時
         print("Help is ready!")
 
-    @commands.command()
+    @commands.command(aliases=['h'])
     async def help(self, ctx):
         embed=discord.Embed(title="指令說明", description="$help")
         embed.add_field(name="記帳 $buy", value="用法: $buy <金額> <名稱>(若不輸入則顯示noname)", inline=False)

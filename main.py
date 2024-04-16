@@ -31,10 +31,9 @@ async def load_cogs():
             await bot.load_extension(f"cogs.{filename[:-3]}")
 
 @bot.command()
+@commands.is_owner()
 #載入元件指令
 async def load(ctx, *args):
-    if ctx.author.id != bot.owner_id:
-        return
     if len(args) == 0:
         await ctx.send("請輸入元件名稱")
         return
@@ -43,10 +42,9 @@ async def load(ctx, *args):
         await ctx.send(f"已載入 {i}")
 
 @bot.command()
+@commands.is_owner()
 #卸載元件
 async def unload(ctx, *args):
-    if ctx.author.id != bot.owner_id:
-        return
     if len(args) == 0:
         await ctx.send("請輸入元件名稱")
         return
@@ -55,10 +53,9 @@ async def unload(ctx, *args):
         await ctx.send(f"已卸載 {i}")
 
 @bot.command()
+@commands.is_owner()
 #重新載入元件
 async def reload(ctx, *args):
-    if ctx.author.id != bot.owner_id:
-        return
     if len(args) == 0:
         await ctx.send("請輸入元件名稱")
         return
